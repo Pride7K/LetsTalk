@@ -1,0 +1,18 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Chat>
+
+@{
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+}
+
+<div class="chat-body">
+    @foreach (var chat in Model)
+    {
+        <a class="room-button" asp-controller="Home"
+           asp-action="Chat"
+           asp-route-id="@chat.Id">
+            @chat.ChatUser.Select(user => user.User).FirstOrDefault(user => user.Id == userId).UserName
+        </a>
+    }
+</div>

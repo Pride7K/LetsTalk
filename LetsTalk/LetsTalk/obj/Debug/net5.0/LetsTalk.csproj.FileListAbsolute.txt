@@ -57,3 +57,12 @@ C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTal
 C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\package.json
 C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\obj\Debug\net5.0\Razor\Views\Home\Find.cshtml.g.cs
 C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\obj\Debug\net5.0\Razor\Views\Home\Private.cshtml.g.cs
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\obj\Debug\net5.0\Razor\Views\Home\Report.cshtml.g.cs
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\MoreLinq.dll
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\LetsTalk.xml
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\obj\Debug\net5.0\LetsTalk.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\obj\Debug\net5.0\LetsTalk.xml

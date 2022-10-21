@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LetsTalk.Data;
+using LetsTalk.Errors;
 using LetsTalk.Models;
 using LetsTalk.Transaction;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,11 @@ namespace LetsTalk.Repositories.ChatService
 
         public async Task<Chat> CreateRoom(string name, string userId, CancellationToken token)
         {
+
+            var chatDb = await GetRoomByNameAndType(name, ChatType.Room, token);
+            if (chatDb != null)
+                throw new AlreadyExistsException("Chat Already Exists");
+            
             var chat = new Chat()
             {
                 Name = name,
@@ -62,9 +68,25 @@ namespace LetsTalk.Repositories.ChatService
             return await _context.Chat.Include(chat1 => chat1.Messages)
                 .FirstOrDefaultAsync(chat1 => chat1.Id == id, cancellationToken: token);
         }
+        
+        private async Task<Chat> GetRoomByNameAndType(string roomName,ChatType roomType, CancellationToken token)
+        {
+            return await _context.Chat.Include(chat1 => chat1.Messages)
+                .FirstOrDefaultAsync(chat1 => chat1.Name == roomName && chat1.Type == roomType, cancellationToken: token);
+        }
 
         public async Task<Chat> CreatePrivateRoom(string userIdTargetAdd, string currentUserId, CancellationToken token)
         {
+
+            var privateRoomExists =  await _context.Chat
+                .Include(chat1 => chat1.ChatUser)
+                .ThenInclude(chat1 => chat1.User)
+                .Where(chat => chat.ChatUser.Any(user => user.UserId == userIdTargetAdd) &&
+                             chat.ChatUser.Any(user => user.UserId == currentUserId)).ToListAsync(cancellationToken:token);
+
+            if (privateRoomExists.Any())
+                return privateRoomExists.First();
+            
             var chat = new Chat()
             {
                 Type = ChatType.Private
@@ -102,8 +124,7 @@ namespace LetsTalk.Repositories.ChatService
         {
             return await _context.Chat
                 .Include(chat => chat.ChatUser)
-                .Where(chat => !chat.ChatUser
-                    .Any(user => user.UserId == userIdToNotMatch)).ToListAsync(cancellationToken: token);
+                .Where(chat => !chat.ChatUser.Any(user => user.UserId == userIdToNotMatch)).ToListAsync(cancellationToken: token);
         }
     }
 }

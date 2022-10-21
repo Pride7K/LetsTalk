@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LetsTalk.Data;
 using LetsTalk.Errors;
+using LetsTalk.Extension.Methods;
 using LetsTalk.Models;
 using LetsTalk.Repositories.UserService;
 using Microsoft.AspNetCore.Identity;
@@ -12,10 +13,12 @@ namespace LetsTalk.Controllers
     public class AccountController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private SignInManager<User> _signInManager;
 
-        public AccountController(IUserRepository _userRepository)
+        public AccountController(IUserRepository _userRepository,SignInManager<User> signInManager)
         {
             this._userRepository = _userRepository;
+            _signInManager = signInManager;
         }
         [HttpGet]
         public IActionResult Login() => View();
@@ -28,9 +31,11 @@ namespace LetsTalk.Controllers
             try
             {
                 var result = await _userRepository.Login(username, password);
-                return result.Succeeded ?
-                    RedirectToAction("Index","Home") 
-                    : RedirectToAction("Login","Account");
+                
+                if(!result.Succeeded)
+                    return RedirectToAction("Login","Account");
+                
+                return RedirectToAction("Index", "Home");
             }
             catch (NotFoundException e)
             {
@@ -41,6 +46,7 @@ namespace LetsTalk.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+        
         [HttpPost]
         public async Task<IActionResult> Register(string username,string password)
         {
@@ -60,12 +66,11 @@ namespace LetsTalk.Controllers
                 return RedirectToAction("Register", "Account");
             }
         }
-        
-        public async Task<IActionResult> Logout(string username,string password)
+
+        public async Task<IActionResult> Logout()
         {
-            await _userRepository.Logout();
-            
-            return RedirectToAction("Login","Account");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LetsTalk.Dtos.HomeControllerDto.ReportResponseDto 
+
+<form class="chat-input" asp-controller="Home" asp-action="GetReport">
+    <input type="date" placeholder="Data Inicio da busca" name="startDateTimeCut"/>
+    <input type="date" placeholder="Data Final da busca" name="endDateTimeCut"/>
+    <button type="submit">Send</button>
+</form>
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+@if (Model.totalMessages != 0)
+{
+    <h2>Users Reports</h2>
+
+    <table>
+        <tr>
+            <th>Total Messages</th>
+            <th>Total Users</th>
+            <th>Average Content Length</th>
+            <th>Shortest Message Length</th>
+            <th>Longest Message Length</th>
+            <th>Most Active User Based by Number of Messages</th>
+        </tr>
+        <tr>
+            <td>@Model.totalMessages</td>
+            <td>@Model.totalUsers</td>
+            <td>@Model.averageContentLength</td>
+            <td>@Model.shotestMessage</td>
+            <td>@Model.longestMessage</td>
+            <td>@Model.MostActiveUserByNumberOfMessages.UserName</td>
+        </tr>
+    </table>
+}

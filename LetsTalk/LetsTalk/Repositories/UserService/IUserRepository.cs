@@ -14,7 +14,7 @@ namespace LetsTalk.Repositories.UserService
         
         Task<Microsoft.AspNetCore.Identity.SignInResult> Login(string username,string password);
         Task<IdentityResult> Create(string username,string password);
-        
-        Task Logout();
+
+        Task Logout(string userId);
     }
 }

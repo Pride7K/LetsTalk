@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -24,7 +25,6 @@ namespace LetsTalk.Controllers
         private readonly IChatRepository _chatRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly IUserRepository _userRepository;
-
         public HomeController(AppDbContext _context,
             IChatRepository _chatRepository,
             IMessageRepository _messageRepository,
@@ -34,21 +34,6 @@ namespace LetsTalk.Controllers
             this._chatRepository = _chatRepository;
             this._messageRepository = _messageRepository;
             this._userRepository = _userRepository;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(string messageBody, int roomId, [FromServices] ChatHub _chatHub, CancellationToken token)
-        {
-            var messageDb = await _messageRepository.SendMessage(messageBody, roomId, User.Identity.Name,token);
-
-            await _chatHub.Clients.Group(roomId.ToString()).SendAsync("RecieveMessage", new
-            {
-                Text = messageDb.Text,
-                Name = messageDb.Name,
-                CreatedAt = messageDb.CreatedAt.ToString("dd/MM/yyyy hh:mm:ss")
-            }, cancellationToken:token);
-
-            return Ok();
         }
 
         [HttpGet]
@@ -65,6 +50,20 @@ namespace LetsTalk.Controllers
             var users = await _userRepository.GetUsersExceptSpecificUser(User.GetUserId(),token);
 
             return View(users);
+        }
+
+        public async Task<IActionResult> GetReport(string startDateTimeCut,string endDateTimeCut)
+        {
+            var result = await _messageRepository.GetReport(DateTime.ParseExact(startDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture),
+                DateTime.ParseExact(endDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture));
+
+            return View("Report",result);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Report()
+        {
+            return View();
         }
 
         [HttpGet]

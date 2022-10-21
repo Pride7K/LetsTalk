@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using LetsTalk.Data;
+using LetsTalk.Dtos.HomeControllerDto;
 using LetsTalk.Extension.Methods;
 using LetsTalk.Hubs;
 using LetsTalk.Models;
@@ -13,12 +14,15 @@ using LetsTalk.Repositories.MessageService;
 using LetsTalk.Repositories.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LetsTalk.Controllers
 {
     [Authorize]
+    [ApiController]
+    [Route("Home")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
@@ -36,7 +40,7 @@ namespace LetsTalk.Controllers
             this._userRepository = _userRepository;
         }
 
-        [HttpGet]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index(CancellationToken token)
         {
             var chats = await _chatRepository.GetRoomsExceptRoomsThatSpecificUserHas(User.GetUserId(),token);
@@ -44,36 +48,37 @@ namespace LetsTalk.Controllers
             return View(chats);
         }
 
-        [HttpGet]
+        [HttpGet("Find")]
         public async Task<IActionResult> Find(CancellationToken token)
         {
             var users = await _userRepository.GetUsersExceptSpecificUser(User.GetUserId(),token);
 
             return View(users);
         }
-
-        public async Task<IActionResult> GetReport(string startDateTimeCut,string endDateTimeCut)
+        [HttpPost("Report")]
+        public async Task<IActionResult> Report([FromForm] string startDateTimeCut,[FromForm] string endDateTimeCut)
         {
             var result = await _messageRepository.GetReport(DateTime.ParseExact(startDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture),
                 DateTime.ParseExact(endDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture));
 
-            return View("Report",result);
+            return View(result);
         }
         
-        [HttpGet]
+        [HttpGet("Report")]
         public async Task<IActionResult> Report()
         {
             return View();
         }
+        
 
-        [HttpGet]
+        [HttpGet("Private")]
         public async Task<IActionResult> Private(CancellationToken token)
         {
             var chats = await _chatRepository.GetPrivateRooms(User.GetUserId(),token);
 
             return View(chats);
         }
-
+        [HttpGet("CreatePrivateRoom")]
         public async Task<IActionResult> CreatePrivateRoom(string userId, CancellationToken token)
         {
             var chat = await _chatRepository.CreatePrivateRoom(userId, User.GetUserId(),token);
@@ -85,8 +90,8 @@ namespace LetsTalk.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> CreateMessage(int chatId, string messageBody, CancellationToken token)
+        [HttpPost("CreateMessage")]
+        public async Task<IActionResult> CreateMessage([FromForm] int chatId, [FromForm] string messageBody, CancellationToken token)
         {
             await _messageRepository.CreateMessage(chatId, messageBody, User.Identity.Name,token);
 
@@ -100,15 +105,15 @@ namespace LetsTalk.Controllers
             return View(chat);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateRoom(string name, CancellationToken token)
+        [HttpPost("CreateRoom")]
+        public async Task<IActionResult> CreateRoom([FromForm] string name, CancellationToken token)
         {
             await _chatRepository.CreateRoom(name, User.GetUserId(),token);
 
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpGet("JoinRoom")]
         public async Task<IActionResult> JoinRoom(int id, CancellationToken token)
         {
             await _chatRepository.JoinRoom(id, User.GetUserId(),token);

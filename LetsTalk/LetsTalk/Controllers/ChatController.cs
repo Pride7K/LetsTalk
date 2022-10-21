@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LetsTalk.Data;
+using LetsTalk.Dtos.ChatControllerDto;
 using LetsTalk.Hubs;
 using LetsTalk.Models;
 using LetsTalk.Repositories.MessageService;
@@ -12,7 +13,8 @@ using Microsoft.AspNetCore.SignalR;
 namespace LetsTalk.Controllers
 {
     [Authorize]
-    [Route("[controller]")]
+    [ApiController]
+    [Route("Chat")]
     public class ChatController : Controller
     {
         private readonly AppDbContext _context;
@@ -30,11 +32,11 @@ namespace LetsTalk.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> SendMessage(string messageBody,int roomId)
+        public async Task<IActionResult> SendMessage([FromForm] [Bind("roomId,messageBody")]SendMessageRequestDto model )
         {
-            var messageDb = await _messageRepository.CreateMessage(messageBody:messageBody,chatId:roomId ,UserName: User.Identity.Name,token: CancellationToken.None);
+            var messageDb = await _messageRepository.CreateMessage(messageBody:model.messageBody,chatId:model.roomId ,UserName: User.Identity.Name,token: CancellationToken.None);
 
-            await _chatHub.Clients.Group(roomId.ToString()).SendAsync("RecieveMessage", new
+            await _chatHub.Clients.Group(model.roomId.ToString()).SendAsync("RecieveMessage", new
             {
                 Text = messageDb.Text,
                 Name = messageDb.Name,

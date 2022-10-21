@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LetsTalk.Controllers
 {
+    [ApiController]
+    [Route("Account")]
     public class AccountController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -20,13 +22,13 @@ namespace LetsTalk.Controllers
             this._userRepository = _userRepository;
             _signInManager = signInManager;
         }
-        [HttpGet]
+        [HttpGet("Login")]
         public IActionResult Login() => View();
         
-        [HttpGet]
+        [HttpGet("Register")]
         public IActionResult Register() => View();
-        [HttpPost]
-        public async Task<IActionResult> Login(string username,string password)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromForm]string username,[FromForm]string password)
         {
             try
             {
@@ -47,8 +49,8 @@ namespace LetsTalk.Controllers
             }
         }
         
-        [HttpPost]
-        public async Task<IActionResult> Register(string username,string password)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromForm] string username,[FromForm]string password)
         {
             try
             {
@@ -66,7 +68,8 @@ namespace LetsTalk.Controllers
                 return RedirectToAction("Register", "Account");
             }
         }
-
+        
+        [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

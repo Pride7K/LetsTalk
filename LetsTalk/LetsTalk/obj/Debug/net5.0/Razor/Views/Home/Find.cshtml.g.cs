@@ -26,8 +26,15 @@ using LetsTalk.Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 4 "C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\Views\_ViewImports.cshtml"
+using LetsTalk.Extension.Methods;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"097248fe0a608f2e75de1c5867ffe251b6ade13e", @"/Views/Home/Find.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"31ee131d0d61ff9ac1b59e44259ebd804e8566e2", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"3896dc6e57a6ead9328b4069e3cfc1f5a0b0acd8", @"/Views/_ViewImports.cshtml")]
     #nullable restore
     public class Views_Home_Find : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IEnumerable<User>>
     #nullable disable
@@ -68,7 +75,7 @@ using LetsTalk.Models;
 #line hidden
 #nullable disable
             WriteLiteral("    <div>\r\n        ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "097248fe0a608f2e75de1c5867ffe251b6ade13e4095", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "097248fe0a608f2e75de1c5867ffe251b6ade13e4318", async() => {
                 WriteLiteral("\r\n            ");
 #nullable restore
 #line 7 "C:\Users\gsantos\OneDrive - VIA Consulting\Desktop\doneByMyself\LetsTalk\LetsTalk\Views\Home\Find.cshtml"

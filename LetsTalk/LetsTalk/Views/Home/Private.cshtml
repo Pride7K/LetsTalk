@@ -1,9 +1,10 @@
 ﻿@using System.Security.Claims
+@using LetsTalk.Extension.Methods
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<Chat>
 
 @{
-    var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+    var userId = User.GetUserId();
 }
 
 <div class="chat-body">

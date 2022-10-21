@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using LetsTalk.Data;
 using LetsTalk.Hubs;
 using LetsTalk.Models;
+using LetsTalk.Repositories.ChatService;
+using LetsTalk.Repositories.MessageService;
+using LetsTalk.Repositories.UserService;
+using LetsTalk.Transaction;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +47,10 @@ namespace LetsTalk
                 .AddDefaultTokenProviders();
 
             services.AddSignalR();
+            services.AddScoped<IChatRepository,ChatRepository>();
+            services.AddScoped<IMessageRepository,MessageRepository>();
+            services.AddScoped<IUserRepository,UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

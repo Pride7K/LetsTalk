@@ -56,10 +56,10 @@ namespace LetsTalk.Controllers
             return View(users);
         }
         [HttpPost("Report")]
-        public async Task<IActionResult> Report([FromForm] string startDateTimeCut,[FromForm] string endDateTimeCut)
+        public async Task<IActionResult> Report([FromForm] ReportRequestDto reportRequestDto)
         {
-            var result = await _messageRepository.GetReport(DateTime.ParseExact(startDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture),
-                DateTime.ParseExact(endDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture));
+            var result = await _messageRepository.GetReport(DateTime.ParseExact(reportRequestDto.startDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture),
+                DateTime.ParseExact(reportRequestDto.endDateTimeCut,"yyyy-MM-dd",CultureInfo.InvariantCulture));
 
             return View(result);
         }
@@ -91,11 +91,11 @@ namespace LetsTalk.Controllers
 
 
         [HttpPost("CreateMessage")]
-        public async Task<IActionResult> CreateMessage([FromForm] int chatId, [FromForm] string messageBody, CancellationToken token)
+        public async Task<IActionResult> CreateMessage([FromForm] CreateMessageDto createMessageDto, CancellationToken token)
         {
-            await _messageRepository.CreateMessage(chatId, messageBody, User.Identity.Name,token);
+            await _messageRepository.CreateMessage(createMessageDto.chatId, createMessageDto.messageBody, User.Identity.Name,token);
 
-            return RedirectToAction("Chat", new { id = chatId });
+            return RedirectToAction("Chat", new { id = createMessageDto.chatId });
         }
 
         [HttpGet("{id:int}")]

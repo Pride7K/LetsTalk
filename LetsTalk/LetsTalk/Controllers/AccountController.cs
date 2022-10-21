@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LetsTalk.Data;
+using LetsTalk.Dtos.AccountControllerDto;
 using LetsTalk.Errors;
 using LetsTalk.Extension.Methods;
 using LetsTalk.Models;
@@ -28,11 +29,11 @@ namespace LetsTalk.Controllers
         [HttpGet("Register")]
         public IActionResult Register() => View();
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromForm]string username,[FromForm]string password)
+        public async Task<IActionResult> Login([FromForm]LoginRequestDto loginRequestDto)
         {
             try
             {
-                var result = await _userRepository.Login(username, password);
+                var result = await _userRepository.Login(loginRequestDto.username, loginRequestDto.password);
                 
                 if(!result.Succeeded)
                     return RedirectToAction("Login","Account");
@@ -50,16 +51,16 @@ namespace LetsTalk.Controllers
         }
         
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromForm] string username,[FromForm]string password)
+        public async Task<IActionResult> Register([FromForm] RegisterRequestDto registerRequestDto)
         {
             try
             {
-                var createdUser = await _userRepository.Create(username, password);
+                var createdUser = await _userRepository.Create(registerRequestDto.username, registerRequestDto.password);
 
                 if (!createdUser.Succeeded)
                     return RedirectToAction("Register", "Account");
                 
-                await _userRepository.Login(username, password);
+                await _userRepository.Login(registerRequestDto.username, registerRequestDto.password);
 
                 return RedirectToAction("Index", "Home");
             }
